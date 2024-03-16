@@ -1,6 +1,5 @@
 package cyanlib.loader;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
 import cyanlib.launcher.CyanPluginLauncher;
 import cyanlib.loader.lanternmc.BukkitLibraryManager;
 import cyanlib.loader.lanternmc.Library;
