@@ -1,7 +1,11 @@
 package cyanlib.launcher;
 
 import cyanlib.loader.KotlinBootstrap;
+import org.bukkit.command.Command;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
 
 /**
  * 嵌套框架

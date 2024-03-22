@@ -1,13 +1,11 @@
-package cn.cyanbukkit.allcmd.cyanlib.loader;
+package cyanlib.loader;
 
-import cn.cyanbukkit.allcmd.cyanlib.launcher.CyanPluginLauncher;
-import cn.cyanbukkit.allcmd.cyanlib.loader.lanternmc.BukkitLibraryManager;
-import cn.cyanbukkit.allcmd.cyanlib.loader.lanternmc.Library;
+import cyanlib.launcher.CyanPluginLauncher;
+import cyanlib.loader.lanternmc.BukkitLibraryManager;
+import cyanlib.loader.lanternmc.Library;
 import org.bukkit.Bukkit;
 
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 
 public class KotlinBootstrap {

@@ -2,7 +2,7 @@ val group = "cn.cyanbukkit.example"
 val version = "0.1"
 
 bukkit {
-    name = "Example"
+    name = rootProject.name
     description = "An example plugin for CyanBukkit"
     authors = listOf("Your Name")
     website = "https://cyanbukkit.cn"
@@ -23,6 +23,8 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
+    compileOnly(fileTree("libs") { include("*.jar") })
+
 }
 
 kotlin {
