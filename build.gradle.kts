@@ -40,4 +40,8 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
     }
+
+    jar {
+        archiveFileName.set("${rootProject.name}-${version}.jar")
+    }
 }
