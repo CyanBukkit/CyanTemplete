@@ -1,12 +1,12 @@
-val group = "cn.cyanbukkit.example"
+val group = "cn.cyanbukkit.example" // 先更改这里
 val version = "0.1"
 
 bukkit {
-    name = rootProject.name
-    description = "An example plugin for CyanBukkit"
-    authors = listOf("Your Name")
-    website = "https://cyanbukkit.cn"
-    main = "${group}.cyanlib.launcher.CyanPluginLauncher"
+    name = rootProject.name // 设置插件的名字 已设置跟随项目名
+    description = "An example plugin for CyanBukkit" // 设置插件的描述
+    authors = listOf("Your Name") // 设置插件作者
+    website = "https://cyanbukkit.cn" // 设置插件的网站
+    main = "${group}.cyanlib.launcher.CyanPluginLauncher" // 设置插件的主类 修改请到group修改
 }
 
 plugins {
