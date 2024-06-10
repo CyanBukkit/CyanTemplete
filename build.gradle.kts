@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly(fileTree("libs") { include("*.jar") })
 
 }
