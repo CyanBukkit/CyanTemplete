@@ -19,6 +19,7 @@ public class CyanPluginLauncher extends JavaPlugin {
     public CyanPluginLauncher() {
         cyanPlugin = this;
         KotlinBootstrap.init();
+        JavaHandle.getJavaVersionToDownloadHikaricp();
     }
 
 

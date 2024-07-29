@@ -24,7 +24,10 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly(fileTree("libs") { include("*.jar") })
-
+//    compileOnly("com.zaxxer:HikariCP:5.1.0") // Java 11+
+//    compileOnly("com.zaxxer:HikariCP:4.0.3") // Java 8
+//    compileOnly("com.zaxxer:HikariCP:2.4.13") // Java 7
+//    compileOnly("com.zaxxer:HikariCP:2.3.13") // Java 6
 }
 
 kotlin {
