@@ -37,7 +37,7 @@ dependencies {
 // root build.gradle
 detekt {
     input = files("src/main/kotlin", "src/main/java")	// 指定需要扫描的源代码文件路径
-//    config = files("config/detekt.yml")	// 指定采用的规则集文件
+    config = files("config/detekt.yml")	// 指定采用的规则集文件
     reports {	// 指定输出的报告文件类型
         html {
             enabled = true                        // Enable/Disable HTML report (default: true)
