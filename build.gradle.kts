@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
 val group = "cn.cyanbukkit.example" // 先更改这里
 val version = "0.1"
 
@@ -11,6 +13,7 @@ bukkit {
 
 plugins {
     java
+    id("io.gitlab.arturbosch.detekt").version("1.16.0-RC1")
     kotlin("jvm") version "1.9.20"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
@@ -29,6 +32,21 @@ dependencies {
 //    compileOnly("com.zaxxer:HikariCP:2.4.13") // Java 7
 //    compileOnly("com.zaxxer:HikariCP:2.3.13") // Java 6
 }
+
+
+// root build.gradle
+detekt {
+    input = files("src/main/kotlin", "src/main/java")	// 指定需要扫描的源代码文件路径
+//    config = files("config/detekt.yml")	// 指定采用的规则集文件
+    reports {	// 指定输出的报告文件类型
+        html {
+            enabled = true                        // Enable/Disable HTML report (default: true)
+            destination = file("build/reports/detekt.html") // Path where HTML report will be stored (default:
+        }
+    }
+}
+
+
 
 kotlin {
     jvmToolchain(8)
