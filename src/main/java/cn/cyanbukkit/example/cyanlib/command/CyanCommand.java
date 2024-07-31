@@ -30,8 +30,8 @@ public abstract class CyanCommand {
      * @return 返回帮助信息
      */
     public String help(CommandSender sender) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("§8您好§b") .append(sender.getName()).append("§f欢迎使用插件").append(cyanPlugin.getName()).append("\n");
+        String helpMessage = "§8 - " + cyanPlugin.getName() + "§f - 帮助信息\n";
+        StringBuilder stringBuilder = new StringBuilder(helpMessage);
         RegisterCommand registerMainCommand = this.getClass().getAnnotation(RegisterCommand.class);
         stringBuilder.append("§8|-/").append(registerMainCommand.name()).append(" help - 查看帮助\n");
         // 设计一个精美指令样式图
