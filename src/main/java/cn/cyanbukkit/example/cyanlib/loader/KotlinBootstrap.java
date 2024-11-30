@@ -29,7 +29,7 @@ public class KotlinBootstrap {
             whichUrl = "https://maven.aliyun.com/repository/central";
         }
         manager.addRepository(whichUrl);
-        Library Common = Library.builder().groupId("org.jetbrains.kotlin").artifactId("kotlin-stdlib").version("1.9.20").build();
+        Library Common = Library.builder().groupId("org.jetbrains.kotlin").artifactId("kotlin-stdlib").version("2.0.21").build();
         manager.loadLibrary(Common);
         Bukkit.getServer().getConsoleSender().sendMessage("§a[青桶社区大CB 普通型前置加载器] §e正在加载 " + Common.getArtifactId() + " ...");
     }

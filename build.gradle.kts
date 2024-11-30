@@ -14,7 +14,7 @@ bukkit {
 plugins {
     java
 //    id("io.gitlab.arturbosch.detekt").version("1.16.0-RC1")
-    kotlin("jvm") version "2.0.20"
+    kotlin("jvm") version "2.0.21"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     //shadow
 //    id("com.github.johnrengelman.shadow") version "8.0.0"
@@ -23,16 +23,17 @@ plugins {
 repositories {
     maven("https://nexus.cyanbukkit.cn/repository/maven-public/")
     maven("https://maven.elmakers.com/repository")
+    mavenCentral()
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly(fileTree("libs") { include("*.jar") })
 //    compileOnly("com.zaxxer:HikariCP:5.1.0") // Java 11+
 //    compileOnly("com.zaxxer:HikariCP:4.0.3") // Java 8
 //    compileOnly("com.zaxxer:HikariCP:2.4.13") // Java 7
 //    compileOnly("com.zaxxer:HikariCP:2.3.13") // Java 6
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 
@@ -43,8 +44,6 @@ kotlin {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks {
