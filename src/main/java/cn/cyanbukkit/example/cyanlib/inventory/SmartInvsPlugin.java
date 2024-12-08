@@ -2,16 +2,14 @@ package cn.cyanbukkit.example.cyanlib.inventory;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SmartInvsPlugin extends JavaPlugin {
+public class SmartInvsPlugin {
 
     private static SmartInvsPlugin instance;
     private static InventoryManager invManager;
-
-    @Override
-    public void onEnable() {
+    // 加载的启动入口
+    public void onEnable(JavaPlugin javaPlugin) {
         instance = this;
-
-        invManager = new InventoryManager(this);
+        invManager = new InventoryManager(javaPlugin);
         invManager.init();
     }
 
