@@ -30,6 +30,7 @@ public class CyanPluginLauncher extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        new SmartInvsPlugin().onEnable(this) // 写GUI必要的加载入口
     }
 
     @Override
