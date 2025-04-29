@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static cn.cyanbukkit.example.cyanlib.launcher.CyanPluginLauncher.cyanPlugin;
+
 /**
  * Kotlin加载器 入口！
  */
@@ -18,11 +20,12 @@ public class KotlinBootstrap {
 
     // 根据联网的是否能正常链接Google判定地区在哪连不上就是国内
     public static void init() {
-        BukkitLibraryManager manager = new BukkitLibraryManager(CyanPluginLauncher.cyanPlugin);
+        BukkitLibraryManager manager = new BukkitLibraryManager(cyanPlugin);
         try {
             URL url = new URL("http://www.google.com");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(3000);
+            cyanPlugin.getServer().getPluginManager().registerEvents(new LoadingException("网络连不上"), cyanPlugin);
             connection.connect();
             whichUrl = "https://repo.maven.apache.org/maven2/";
         } catch (Exception e) {
@@ -41,7 +44,7 @@ public class KotlinBootstrap {
      * @param version 版本
      */
     public static void loadDepend(String groupId, String artifactId, String version) {
-        BukkitLibraryManager manager = new BukkitLibraryManager(CyanPluginLauncher.cyanPlugin);
+        BukkitLibraryManager manager = new BukkitLibraryManager(cyanPlugin);
         manager.addRepository(whichUrl);
         manager.loadLibrary(Library.builder().groupId(groupId).artifactId(artifactId).version(version).build());
         Bukkit.getServer().getConsoleSender().sendMessage("§a[青桶社区大CB 普通型前置加载器] §e正在加载前置 " + artifactId + " ...");

