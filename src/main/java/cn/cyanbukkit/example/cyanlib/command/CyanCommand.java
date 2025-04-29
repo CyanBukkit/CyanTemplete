@@ -146,12 +146,13 @@ public abstract class CyanCommand {
         ) {
             @Override
             public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-                if (args.length > 0) { // 优先执行子指令
+                if (args.length > 0) {
+                    // 优先执行子指令 help
                     if (args[0].equalsIgnoreCase("help")) {
                         sender.sendMessage(help(sender));
                         return true;
                     }
-
+                    // 子指令
                     Method[] methods = CyanCommand.this.getClass().getDeclaredMethods();
                     for (Method method : methods) {
                         ArgumentCommand argumentCommand = method.getAnnotation(ArgumentCommand.class);
@@ -159,7 +160,8 @@ public abstract class CyanCommand {
                             continue;
                         }
                         if (args[0].equalsIgnoreCase(argumentCommand.name())) {
-                            boolean has = argumentCommand.permission().isEmpty() || sender.hasPermission(argumentCommand.permission());
+                            boolean has = argumentCommand.permission().isEmpty()
+                                    || sender.hasPermission(argumentCommand.permission());
                             if (has){
                                 List<String> list = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
                                 method.setAccessible(true);
