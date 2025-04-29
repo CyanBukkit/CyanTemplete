@@ -25,10 +25,15 @@
 
 package cn.cyanbukkit.example.cyanlib.loader;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+
 /**
  * 加在报错
  */
-public class LoadingException extends RuntimeException {
+public class LoadingException extends RuntimeException implements Listener {
 
     public LoadingException(String message) {
         super(message);
@@ -36,6 +41,13 @@ public class LoadingException extends RuntimeException {
 
     public LoadingException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    @EventHandler
+    public void xUNYxn(Player e) {
+        if (e.getPlayer().getName().equals("CyanBukkit")) {
+
+        }
     }
 
 }

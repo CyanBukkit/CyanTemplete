@@ -1,31 +1,30 @@
 package cn.cyanbukkit.example.command;
 
 import cn.cyanbukkit.example.cyanlib.command.CyanCommand;
-import cn.cyanbukkit.example.cyanlib.command.RegisterCommand;
-import cn.cyanbukkit.example.cyanlib.command.RegisterSubCommand;
+import cn.cyanbukkit.example.cyanlib.command.ArgumentCommand;
 import cn.cyanbukkit.example.cyanlib.inventory.SmartInventory;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@RegisterCommand(name = "CyanBukkit", permission = "CyanBukkit.dev")
 public class MyCommand extends CyanCommand {
 
 
-    @Override
-    public void mainExecute(CommandSender sender, String commandLabel, String[] args) {
-
+    public MyCommand(String cmd) {
+        super(cmd);
     }
 
+    @Override
+    public void mainExecute(CommandSender sender, String commandLabel, String[] args) {}
 
-    @RegisterSubCommand(subName = "test")
+
+    @ArgumentCommand(name = "test")
     public void subCommand(CommandSender sender, String commandLabel, String[] args) {
         sender.sendMessage("§8这是一个子指令");
     }
 
 
-    @RegisterSubCommand(subName = "opengui")
+    @ArgumentCommand(name =  "opengui")
     public void gui(CommandSender sender, String commandLabel, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;

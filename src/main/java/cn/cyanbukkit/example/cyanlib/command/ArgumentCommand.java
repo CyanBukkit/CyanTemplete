@@ -4,8 +4,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RegisterSubCommand {
-    String subName();
+public @interface ArgumentCommand {
+    String name();
     String permission() default "";
-    String howToUse() default "";
+    String description() default "";
 }

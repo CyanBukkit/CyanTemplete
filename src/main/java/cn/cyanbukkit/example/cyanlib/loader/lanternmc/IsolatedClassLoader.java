@@ -8,8 +8,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.util.Objects;
 
-public class IsolatedClassLoader
-extends URLClassLoader {
+public class IsolatedClassLoader extends URLClassLoader {
     public IsolatedClassLoader(URL ... urls) {
         super(Objects.requireNonNull(urls, "urls"), ClassLoader.getSystemClassLoader().getParent());
     }
