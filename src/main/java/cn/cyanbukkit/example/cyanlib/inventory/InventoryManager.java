@@ -1,6 +1,7 @@
 package cn.cyanbukkit.example.cyanlib.inventory;
 
 
+import cn.cyanbukkit.example.cyanlib.auth.ConfigLoadException;
 import cn.cyanbukkit.example.cyanlib.inventory.content.InventoryContents;
 import cn.cyanbukkit.example.cyanlib.inventory.opener.ChestInventoryOpener;
 import cn.cyanbukkit.example.cyanlib.inventory.opener.InventoryOpener;

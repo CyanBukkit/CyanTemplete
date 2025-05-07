@@ -73,7 +73,7 @@ public abstract class CyanCommand {
 
 
     /**
-     * 主指令 没有参数的
+     * 主指令 不用请留空! 子指令走下来会执行这个的 不用请留空
      *
      * @param commandLabel 指令
      * @param args         参数        执行总指令的时候会返回数组 该方法会先跑然后在找sub 去跑sub
@@ -150,9 +150,8 @@ public abstract class CyanCommand {
                     // 优先执行子指令 help
                     if (args[0].equalsIgnoreCase("help")) {
                         sender.sendMessage(help(sender));
-                        return true;
                     }
-                    // 子指令
+                    // 获取当前类（CyanCommand）的所有声明的方法，包括公有、保护、默认（包）访问和私有方法，但不包括继承的方法
                     Method[] methods = CyanCommand.this.getClass().getDeclaredMethods();
                     for (Method method : methods) {
                         ArgumentCommand argumentCommand = method.getAnnotation(ArgumentCommand.class);
@@ -173,18 +172,15 @@ public abstract class CyanCommand {
                             } else {
                                 sender.sendMessage("§c你没有权限执行这个指令");
                             }
-                            return true;
                         }
                     }
                     // 主指令
                     if (!needPermission || sender.hasPermission(permission)) {
                         mainExecute(sender, commandLabel, args);
-                        return true;
                     } else {
                         sender.sendMessage("§c你没有权限执行这个指令");
                     }
                 }
-                // 执行子指令
                 return true;
             }
 

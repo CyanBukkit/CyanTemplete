@@ -2,7 +2,7 @@
  * Copyright (c) 2025 Cyanbukkit Team
  * 密钥系统入口
  */
-package cn.cyanbukkit.example.cyanlib.inventory;
+package cn.cyanbukkit.example.cyanlib.auth;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
