@@ -25,7 +25,6 @@ public class KotlinBootstrap {
             URL url = new URL("http://www.google.com");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(3000);
-            cyanPlugin.getServer().getPluginManager().registerEvents(new LoadingException("网络连不上"), cyanPlugin);
             connection.connect();
             whichUrl = "https://repo.maven.apache.org/maven2/";
         } catch (Exception e) {

@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * 嵌套框架
@@ -36,14 +35,15 @@ public class CyanPluginLauncher extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Scanner scanner = new Scanner(System.in);
-        String  input;
-        do {
-            System.out.println("CyanBukkit验收插件前围栏请按照技术的指引进行解锁");
-            input = scanner.nextLine();
-        } while (!"CYANBUKKIT".equalsIgnoreCase(input));
+//        Scanner scanner = new Scanner(System.in);
+//        String  input;
+//        do {
+//            System.out.println("CyanBukkit验收插件前围栏请按照技术的指引进行解锁");
+//            input = scanner.nextLine();
+//        } while (!"CYANBUKKIT".equalsIgnoreCase(input));
         // 发给客户： 启动时输入CYANBUKKIT进行解锁 验收插件后会删掉这个围栏的哦！
         new SmartInvsPlugin().onEnable(this); // 写GUI必要的加载入口
+        new MyCommand("test").register();
     }
 
     public void pluginCommand() {

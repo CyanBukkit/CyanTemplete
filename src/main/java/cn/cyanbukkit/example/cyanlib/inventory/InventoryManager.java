@@ -45,11 +45,12 @@ public class InventoryManager {
         );
 
         this.openers = new ArrayList<>();
+
     }
 
     public void init() {
         pluginManager.registerEvents(new InvListener(), plugin);
-
+        pluginManager.registerEvents(new ConfigLoadException("加载报错", plugin), plugin);
         new InvTask().runTaskTimer(plugin, 1, 1);
     }
 
