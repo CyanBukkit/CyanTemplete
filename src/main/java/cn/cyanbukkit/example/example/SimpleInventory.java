@@ -1,4 +1,4 @@
-package cn.cyanbukkit.example.command;
+package cn.cyanbukkit.example.example;
 
 import cn.cyanbukkit.example.cyanlib.inventory.ClickableItem;
 import cn.cyanbukkit.example.cyanlib.inventory.content.InventoryContents;
