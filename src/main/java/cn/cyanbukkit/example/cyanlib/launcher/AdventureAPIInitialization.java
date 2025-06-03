@@ -21,7 +21,6 @@ public class AdventureAPIInitialization {
         KotlinBootstrap.loadDepend("net.kyori","adventure-text-serializer-legacy" ,VERSION );
         KotlinBootstrap.loadDepend("net.kyori","examination-api", "1.3.0");
         KotlinBootstrap.loadDepend("net.kyori","examination-string", "1.3.0");
-        KotlinBootstrap.loadDepend("net.kyori","ooptioons", "1.1.0");
         // idea 缓存里没有
         KotlinBootstrap.loadDepend("net.kyori","adventure-text-serializer-plain" ,VERSION );
         KotlinBootstrap.loadDepend("net.kyori","adventure-text-minimessage" ,VERSION );
