@@ -45,10 +45,10 @@ dependencies {
 //    compileOnly("com.mojang:brigadier:1.2.9")
 //    compileOnly("com.mojang:logging:1.1.1")
     //==========================
-    //    高级API
+    //    高级API不是Paper可以用启用后需要用ShadowJar
     //==========================
-    compileOnly("net.kyori:adventure-platform-bukkit:4.4.0")
-    compileOnly("net.kyori:adventure-api:4.21.0")
+//    compileOnly("net.kyori:adventure-platform-bukkit:4.4.0")
+//    compileOnly("net.kyori:adventure-api:4.21.0")
     //==========================
     //    MySQL
     //==========================

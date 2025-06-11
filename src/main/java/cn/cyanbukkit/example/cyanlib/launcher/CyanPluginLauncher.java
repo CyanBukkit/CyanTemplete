@@ -29,7 +29,6 @@ public class CyanPluginLauncher extends JavaPlugin {
     public CyanPluginLauncher() {
         cyanPlugin = this;
         KotlinBootstrap.init();
-        AdventureAPIInitialization.init();
         MySQLInitialization.getJavaVersionToDownloadHikaricp();
         // SPIGOT 计分板
         String scoreboardLibraryVersion = "2.3.1";

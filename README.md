@@ -308,3 +308,6 @@ public class SimpleInventory implements InventoryProvider {
 ## 结语
 
 `SmartInventory` 提供了一个强大且灵活的方式来创建和管理 Minecraft 服务器中的自定义库存界面，使得开发者可以轻松地实现复杂的用户交互逻辑。
+
+
+

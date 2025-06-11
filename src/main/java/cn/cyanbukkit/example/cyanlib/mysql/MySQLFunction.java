@@ -3,102 +3,163 @@ package cn.cyanbukkit.example.cyanlib.mysql;
 import java.util.HashMap;
 
 /**
- * 快捷MySQL语句 内置所有MYSQL 的语句格式
- * 链接还得靠自己哦我只负责语句
+ * MySQL快捷语句枚举
+ * <p>
+ * 提供常用MySQL操作的预定义语句模板，简化SQL语句构建过程。
+ * 注意：本类仅提供语句模板，实际数据库连接需要自行实现。
+ *
+ * <p><b>使用示例：</b>
+ * <pre>
+ * // 创建数据库
+ * String createDb = MySQLFunction.CREATE_DB.sql.replace("?", "my_database");
+ *
+ * // 插入数据
+ * HashMap<String, Object> data = new HashMap<>();
+ * data.put("name", "test");
+ * data.put("value", 123);
+ * String insertSql = MySQLFunction.insert(data, "my_table");
+ *
+ * // 执行SQL 先准备后执行
+ * statement.prepareStatement(insertSql).executeUpdate();
+ * </pre>
  */
 public enum MySQLFunction {
 
-    SHOW_DB("SHOW DATABASES"),
-    USE_DB("USE %database%"),
-    SHOW_TABLE("SHOW TABLES"),
-    CREATE_DB("CREATE DATABASE %database%"),
-    IF_NOT_EXIST_CREATE_DB("CREATE DATABASE IF NOT EXISTS %database%"),
-    DELETE_DB("DROP DATABASE %database%"),
-    IF_EXIST_DELETE_DB("DROP DATABASE IF EXISTS %database%"),
     /**
-     * 默认不存在就创 其他情况自己拼
+     * 显示所有数据库
+     */
+    SHOW_DB("SHOW DATABASES"),
+
+    /**
+     * 使用指定数据库
+     */
+    USE_DB("USE ?"),
+
+    /**
+     * 显示当前数据库的所有表
+     */
+    SHOW_TABLE("SHOW TABLES"),
+
+    /**
+     * 创建数据库
+     */
+    CREATE_DB("CREATE DATABASE ?"),
+
+    /**
+     * 如果不存在则创建数据库
+     */
+    IF_NOT_EXIST_CREATE_DB("CREATE DATABASE IF NOT EXISTS ?"),
+
+    /**
+     * 删除数据库
+     */
+    DELETE_DB("DROP DATABASE ?"),
+
+    /**
+     * 如果存在则删除数据库
+     */
+    IF_EXIST_DELETE_DB("DROP DATABASE IF EXISTS ?"),
+
+    /**
+     * 创建表前缀语句(需自行补充表结构定义)
+     * <p>示例：CREATE_TABLE_PREFIX.sql + "my_table (id INT, name VARCHAR(20))"
      */
     CREATE_TABLE_PREFIX("CREATE TABLE IF NOT EXISTS "),
+
     /**
-     * 下面是查询
+     * 查询表中所有数据
      */
-    SELECT_ALL("SELECT * FROM %table%"),
+    SELECT_ALL("SELECT * FROM ?"),
+
     /**
-     * condition 限制表达式
-     * Where  支持 = != > < >= <=
-     * AND  组合
-     * LIKE 模糊
-     * IN   数组   IN ('US', 'CA', 'MX');
-     * NOT
+     * 条件查询数据
+     * <p>支持运算符：=, !=, >, <, >=, <=, AND, OR, LIKE, IN, NOT等
      */
-    FIND("SELECT * FROM %table% WHERE %condition%"),
+    FIND("SELECT * FROM ? WHERE ?"),
+
+    /**
+     * 更新数据语句模板
+     * <p>需配合{@link #update(String, HashMap, String)}方法使用
+     */
     UPDATE("UPDATE * SET %keyAndNewValue% WHERE %condition%"),
+
     /**
-     * 删除符合条件的那一行数据
+     * 删除符合条件的数据
      */
     DELETE_DATA("DELETE FROM %table% WHERE %condition%"),
+
+    /**
+     * 联合查询(已废弃，建议使用更明确的JOIN语句)
+     * @deprecated 使用JOIN替代
+     */
     @Deprecated
-    UNION("SELECT * FROM %table1% WHERE %condition1% UNION SELECT * FROM %table2% WHERE %condition2% [ORDER BY column1, column2, ...];")
-    ;
+    UNION("SELECT * FROM %table1% WHERE %condition1% UNION SELECT * FROM %table2% WHERE %condition2% [ORDER BY column1, column2, ...];");
+
+    /**
+     * SQL语句模板
+     */
     public final String sql;
+
     MySQLFunction(String sql) {
         this.sql = sql;
     }
 
     /**
-     * 如果是检测是否已经存在 就在后面 加ON DUPLICATE KEY UPDATE uuid = uuid  type = VALUES(type),
-     *                     world = VALUES(world),
-     *                     x = VALUES(x),
-     *                     y = VALUES(y),
-     *                     z = VALUES(z)
-     * uuid 是唯一键 可以根据自己的表进行填写
-     * @param keyAndValues 关键词与默认值
-     * @param tableName 表名
-     * @return 插入语句
+     * 构建INSERT插入语句
+     * <p>
+     * 如需检测重复键，可在返回语句后追加：
+     * <pre>ON DUPLICATE KEY UPDATE uuid = uuid, type = VALUES(type), ...</pre>
+     *
+     * @param keyAndValues 字段名和对应值的映射表
+     * @param tableName 目标表名
+     * @return 完整的INSERT语句
+     *
+     * <p><b>示例：</b>
+     * <pre>
+     * HashMap<String, Object> data = new HashMap<>();
+     * data.put("name", "test");
+     * data.put("value", 123);
+     * String sql = MySQLFunction.insert(data, "my_table");
+     * // 输出: INSERT INTO my_table (name,value) VALUES ('test','123')
+     * </pre>
      */
-    public String insert(HashMap<String, Object> keyAndValues, String tableName) {
+    public static String insert(HashMap<String, Object> keyAndValues, String tableName) {
         StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO " + tableName + " (");
-        for (String key : keyAndValues.keySet()) {
-            sb.append(key).append(",");
-        }
+        sb.append("INSERT INTO ").append(tableName).append(" (");
+        keyAndValues.keySet().forEach(key -> sb.append(key).append(","));
         sb.deleteCharAt(sb.length() - 1);
         sb.append(") VALUES (");
-        for (Object value : keyAndValues.values()) {
-            sb.append("'").append(value).append("',");
-        }
+        keyAndValues.values().forEach(value -> sb.append("'").append(value).append("',"));
         sb.deleteCharAt(sb.length() - 1);
         sb.append(")");
         return sb.toString();
     }
 
     /**
-     * 查询
-     * @param tableName 表名
-     * @param condition 条件 比如 uuid = '123'
-     * @return 查询语句
+     * 构建条件查询语句
+     *
+     * @param tableName 目标表名
+     * @param condition 查询条件表达式(如: "name = 'test' AND value > 100")
+     * @return 完整的SELECT语句
      */
     public static String find(String tableName, String condition) {
-        return FIND.sql.replace("%table%", tableName).replace("%condition%", condition);
+        return FIND.sql.replace("?", tableName).replace("?", condition);
     }
 
     /**
-     * 更新
-     * @param tableName 表名
-     * @param keyAndNewValue key 是关键词 value 是值
-     * @param condition 条件 比如 uuid = '123'
-     * @return 更新语句
+     * 构建UPDATE更新语句
+     *
+     * @param tableName 目标表名
+     * @param keyAndNewValue 要更新的字段和对应新值
+     * @param condition 更新条件表达式
+     * @return 完整的UPDATE语句
      */
     public static String update(String tableName, HashMap<String, Object> keyAndNewValue, String condition) {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE ").append(tableName).append(" SET ");
-        for (String key : keyAndNewValue.keySet()) {
-            sb.append(key).append(" = '").append(keyAndNewValue.get(key)).append("',");
-        }
+        keyAndNewValue.forEach((key, value) -> sb.append(key).append(" = '").append(value).append("',"));
         sb.deleteCharAt(sb.length() - 1);
         sb.append(" WHERE ").append(condition);
         return sb.toString();
     }
-
-
 }
