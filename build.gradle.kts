@@ -69,6 +69,7 @@ dependencies {
     runtimeOnly("net.megavex:scoreboard-library-packetevents:$scoreboardLibraryVersion") // 1.8+
     runtimeOnly("net.megavex:scoreboard-library-legacy:$scoreboardLibraryVersion") // 1.7.10-1.12.2
     compileOnly(fileTree("libs") { include("*.jar") })
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 }
 
 
