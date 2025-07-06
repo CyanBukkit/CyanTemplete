@@ -25,7 +25,6 @@ plugins {
 
 repositories {
     maven("https://nexus.cyanbukkit.cn/repository/maven-public/")
-    maven("https://lanternmc.coding.net/public-artifacts/cyanbukkit/public/packages/")
     maven("https://maven.elmakers.com/repository")
 }
 
