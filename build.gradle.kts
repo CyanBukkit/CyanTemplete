@@ -16,7 +16,7 @@ bukkit {
 
 plugins {
     java
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.2.0"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 //    shadow
 //    id("com.github.johnrengelman.shadow") version "8.0.0"
