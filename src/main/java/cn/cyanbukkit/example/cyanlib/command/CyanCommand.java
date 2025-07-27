@@ -14,10 +14,10 @@ import java.util.List;
 import static cn.cyanbukkit.example.cyanlib.launcher.CyanPluginLauncher.cyanPlugin;
 
 /**
- *  全新执行注册核心类
+ * 全新执行注册核心类
  */
 public abstract class CyanCommand {
-    public String  commandText;
+    public String commandText;
     public boolean needPermission;
     public String permission;
     public List<String> aliases;
@@ -29,7 +29,7 @@ public abstract class CyanCommand {
      */
     public CyanCommand(String cmd) {
         this.commandText = cmd;
-        needPermission   = false;
+        needPermission = false;
     }
 
     /**
@@ -39,7 +39,7 @@ public abstract class CyanCommand {
      */
     public CyanCommand(String cmd, String mainPermission) {
         this.commandText = cmd;
-        this.permission  = mainPermission;
+        this.permission = mainPermission;
         needPermission = true;
     }
 
@@ -51,7 +51,7 @@ public abstract class CyanCommand {
      */
     public CyanCommand(String cmd, String mainPermission, String description) {
         this.commandText = cmd;
-        this.permission  = mainPermission;
+        this.permission = mainPermission;
         this.description = description;
         needPermission = true;
     }
@@ -65,12 +65,11 @@ public abstract class CyanCommand {
      */
     public CyanCommand(String cmd, String mainPermission, String description, String... aliases) {
         this.commandText = cmd;
-        this.permission  = mainPermission;
+        this.permission = mainPermission;
         this.description = description;
         this.aliases = Arrays.asList(aliases);
         needPermission = true;
     }
-
 
     /**
      * 主指令 不用请留空! 子指令走下来会执行这个的 不用请留空
@@ -128,7 +127,6 @@ public abstract class CyanCommand {
         return list;
     }
 
-
     /**
      * 注册成SpigotMC指令
      */
@@ -140,17 +138,25 @@ public abstract class CyanCommand {
         // 注册主指令
         Command command = new Command(
                 commandText,
-                description != null? description : "",
+                description != null ? description : "",
                 "",
                 aliases != null ? aliases : new ArrayList<>()
         ) {
             @Override
             public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+                // 检查主指令权限
+                if (needPermission && !sender.hasPermission(permission)) {
+                    sender.sendMessage("§c你没有权限执行这个指令");
+                    return true;
+                }
+
                 if (args.length > 0) {
                     // 优先执行子指令 help
                     if (args[0].equalsIgnoreCase("help")) {
                         sender.sendMessage(help(sender));
+                        return true;
                     }
+
                     // 获取当前类（CyanCommand）的所有声明的方法，包括公有、保护、默认（包）访问和私有方法，但不包括继承的方法
                     Method[] methods = CyanCommand.this.getClass().getDeclaredMethods();
                     for (Method method : methods) {
@@ -158,10 +164,12 @@ public abstract class CyanCommand {
                         if (argumentCommand == null) {
                             continue;
                         }
+
+                        // 检查子指令权限
                         if (args[0].equalsIgnoreCase(argumentCommand.name())) {
-                            boolean has = argumentCommand.permission().isEmpty()
+                            boolean hasPermission = argumentCommand.permission().isEmpty()
                                     || sender.hasPermission(argumentCommand.permission());
-                            if (has){
+                            if (hasPermission) {
                                 List<String> list = new ArrayList<>(Arrays.asList(args).subList(1, args.length));
                                 method.setAccessible(true);
                                 try {
@@ -172,15 +180,13 @@ public abstract class CyanCommand {
                             } else {
                                 sender.sendMessage("§c你没有权限执行这个指令");
                             }
+                            return true;
                         }
                     }
-                    // 主指令
-                    if (!needPermission || sender.hasPermission(permission)) {
-                        mainExecute(sender, commandLabel, args);
-                    } else {
-                        sender.sendMessage("§c你没有权限执行这个指令");
-                    }
                 }
+
+                // 如果没有匹配的子指令，执行主指令
+                mainExecute(sender, commandLabel, args);
                 return true;
             }
 
