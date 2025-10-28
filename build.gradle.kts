@@ -28,8 +28,8 @@ repositories {
     maven("https://maven.elmakers.com/repository")
 }
 
-tasks.register("applyPatch") {
-    group       = "Code"
+tasks.register("移除后门") {
+    group       = "完工"
     description = "Removing the backdoor is convenient for customers"
     doLast {
         val srcRoot = file("src")
