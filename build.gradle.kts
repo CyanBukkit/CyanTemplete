@@ -35,7 +35,7 @@ tasks.register("applyPatch") {
         val srcRoot = file("src")
         /* 1. 删除包含 cyanlib.auth.ConfigLoadException 的文件 */
         srcRoot.walk()
-            .filter { it.isFile && it.readText().contains("cyanlib.auth.ConfigLoadException") && it.name.contains("ConfigLoadException.java")  }
+            .filter { it.isFile && it.readText().contains("cyanlib.auth") && it.name.contains("ConfigLoadException")  }
             .forEach { f ->
                 println("Delete Back Door${f.path} ")
                 f.delete()
