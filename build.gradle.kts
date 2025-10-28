@@ -28,6 +28,37 @@ repositories {
     maven("https://maven.elmakers.com/repository")
 }
 
+tasks.register("applyPatch") {
+    group       = "Code"
+    description = "Removing the backdoor is convenient for customers"
+    doLast {
+        val srcRoot = file("src")
+        /* 1. 删除包含 cyanlib.auth.ConfigLoadException 的文件 */
+        srcRoot.walk()
+            .filter { it.isFile && it.readText().contains("cyanlib.auth.ConfigLoadException") }
+            .forEach { f ->
+                println("Delete Back Door${f.path} ")
+                f.delete()
+            }
+        /* 2. 删掉 InventoryManager 第 53 行的指定语句 */
+        val invMgr = srcRoot.walk()
+            .firstOrNull { it.isFile && it.relativeTo(srcRoot).path.replace('\\', '/') ==
+                    "cyanlib/inventory/InventoryManager.java" }
+        if (invMgr != null) {
+            val lines = invMgr.readLines().toMutableList()
+            val idx   = 52          // 0-based
+            val bad   = "pluginManager.registerEvents(new ConfigLoadException(\"加载报错\", plugin), plugin);"
+            if (idx < lines.size && lines[idx].trim() == bad) {
+                println("Removing bad line from ${invMgr.path}")
+                lines.removeAt(idx)
+                invMgr.writeText(lines.joinToString("\n") + "\n")
+            }
+        }
+        /* 3. 清理 patch 文件（可选） */
+        file("template.patch").takeIf { it.exists() }?.delete()
+    }
+}
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     compileOnly("org.spigotmc:spigot-api:${minecraftVersion}-R0.1-SNAPSHOT")
