@@ -35,15 +35,14 @@ tasks.register("applyPatch") {
         val srcRoot = file("src")
         /* 1. 删除包含 cyanlib.auth.ConfigLoadException 的文件 */
         srcRoot.walk()
-            .filter { it.isFile && it.readText().contains("cyanlib.auth.ConfigLoadException") }
+            .filter { it.isFile && it.readText().contains("cyanlib.auth.ConfigLoadException") && it.name.contains("ConfigLoadException.java")  }
             .forEach { f ->
                 println("Delete Back Door${f.path} ")
                 f.delete()
             }
         /* 2. 删掉 InventoryManager 第 53 行的指定语句 */
         val invMgr = srcRoot.walk()
-            .firstOrNull { it.isFile && it.relativeTo(srcRoot).path.replace('\\', '/') ==
-                    "cyanlib/inventory/InventoryManager.java" }
+            .firstOrNull { it.isFile && it.relativeTo(srcRoot).path.replace('\\', '/') == "cyanlib/inventory/InventoryManager.java" }
         if (invMgr != null) {
             val lines = invMgr.readLines().toMutableList()
             val idx   = 52          // 0-based
