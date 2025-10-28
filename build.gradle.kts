@@ -40,21 +40,20 @@ tasks.register("applyPatch") {
                 println("Delete Back Door${f.path} ")
                 f.delete()
             }
-        /* 2. 删掉 InventoryManager 第 53 行的指定语句 */
-        val invMgr = srcRoot.walk()
-            .firstOrNull { it.isFile && it.relativeTo(srcRoot).path.replace('\\', '/') == "cyanlib/inventory/InventoryManager.java" }
-        if (invMgr != null) {
-            val lines = invMgr.readLines().toMutableList()
-            val idx   = 52          // 0-based
-            val bad   = "pluginManager.registerEvents(new ConfigLoadException(\"加载报错\", plugin), plugin);"
-            if (idx < lines.size && lines[idx].trim() == bad) {
-                println("Removing bad line from ${invMgr.path}")
-                lines.removeAt(idx)
-                invMgr.writeText(lines.joinToString("\n") + "\n")
-            }
-        }
-        /* 3. 清理 patch 文件（可选） */
-        file("template.patch").takeIf { it.exists() }?.delete()
+        /* 2. 处理 InventoryManager.java */
+        val inv = srcRoot.walk()
+            .firstOrNull {
+                it.isFile && it.name == "InventoryManager.java"
+            } ?: throw GradleException("InventoryManager.java not found!")
+        // 读成字符串，一次性干掉两段内容
+        var txt = inv.readText()
+        // 2-a 删除 import 行（模糊，整行删掉）
+        txt = txt.replace(Regex("""^\s*import\s+.*\bConfigLoadException\s*;[\r\n]+""", RegexOption.MULTILINE), "")
+        // 2-b 删除 registerEvents 那一整行（模糊，前后允许空白）
+        txt = txt.replace(Regex("""\bpluginManager\.registerEvents\s*\(\s*new\s+ConfigLoadException\s*\(\s*"加载报错"\s*,\s*plugin\s*\)\s*,\s*plugin\s*\)\s*;[\r\n]*"""), "")
+        // 写回磁盘
+        inv.writeText(txt)
+        println("Cleaned InventoryManager.java")
     }
 }
 
